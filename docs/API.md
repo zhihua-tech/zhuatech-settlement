@@ -19,6 +19,8 @@
 | GET/POST | `/settlement/reconciliation` | 对账批次查询与创建 |
 | POST | `/settlement/reconciliation/{id}/match` | 执行自动匹配和差异判定 |
 | GET | `/settlement/reconciliation/{id}/metrics` | 查询差异、容差和匹配率 |
+| GET / POST | `/settlement/reconciliation/{id}/transactions` | 查询或批量导入逐笔流水 |
+| GET | `/settlement/reconciliation/{id}/transaction-match` | 按外部流水号执行双边匹配 |
 | POST | `/admin/settlement/reconciliation/{id}/resolve` | 管理员复核处理差异 |
 | POST | `/settlement/reconciliation/{id}/confirm` | 确认无差异结算单 |
 | POST | `/settlement/reconciliation/{id}/settle` | 通过付款门禁并结算 |

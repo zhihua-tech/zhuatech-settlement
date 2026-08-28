@@ -65,6 +65,30 @@ class ReconciliationApiTests {
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.confirmed").isNumber());
     }
 
+    @Test
+    void transactionLinesAreDeduplicatedAndMatchedByExternalReference() throws Exception {
+        long id=create("REC-LINES-001",300,250,3,2,1,true,true,true);
+        String payload="""
+            {"lines":[
+              {"side":"BUSINESS","externalRef":"TX-001","amount":100,"occurredDate":"2026-08-28"},
+              {"side":"LEDGER","externalRef":"TX-001","amount":100,"occurredDate":"2026-08-28"},
+              {"side":"BUSINESS","externalRef":"TX-002","amount":200,"occurredDate":"2026-08-28"},
+              {"side":"LEDGER","externalRef":"TX-002","amount":150,"occurredDate":"2026-08-28"}
+            ]}
+            """;
+        mvc.perform(post("/api/settlement/reconciliation/{id}/transactions",id)
+                .with(httpBasic("operator","operator123")).contentType(MediaType.APPLICATION_JSON).content(payload))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.data.length()").value(4));
+        mvc.perform(get("/api/settlement/reconciliation/{id}/transaction-match",id)
+                .with(httpBasic("operator","operator123")))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.data.matchedCount").value(1))
+            .andExpect(jsonPath("$.data.unmatchedCount").value(1)).andExpect(jsonPath("$.data.variance").value(50));
+        mvc.perform(post("/api/settlement/reconciliation/{id}/transactions",id)
+                .with(httpBasic("operator","operator123")).contentType(MediaType.APPLICATION_JSON)
+                .content("{\"lines\":[{\"side\":\"BUSINESS\",\"externalRef\":\"TX-001\",\"amount\":100,\"occurredDate\":\"2026-08-28\"}]}"))
+            .andExpect(status().isConflict());
+    }
+
     private long create(String no,double source,double ledger,int transactions,int matched,int exceptions,
             boolean confirmed,boolean invoice,boolean bank)throws Exception{
         var result=mvc.perform(post("/api/settlement/reconciliation")
