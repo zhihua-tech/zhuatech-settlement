@@ -16,6 +16,12 @@
 | GET | `/records/export.csv` | 导出 UTF-8 CSV |
 | GET | `/sla-summary` | SLA、逾期、风险和人员工作量 |
 | POST | `/domain/decision` | 执行企业对账与结算管理系统专属领域规则 |
+| GET/POST | `/settlement/reconciliation` | 对账批次查询与创建 |
+| POST | `/settlement/reconciliation/{id}/match` | 执行自动匹配和差异判定 |
+| GET | `/settlement/reconciliation/{id}/metrics` | 查询差异、容差和匹配率 |
+| POST | `/admin/settlement/reconciliation/{id}/resolve` | 管理员复核处理差异 |
+| POST | `/settlement/reconciliation/{id}/confirm` | 确认无差异结算单 |
+| POST | `/settlement/reconciliation/{id}/settle` | 通过付款门禁并结算 |
 | GET/POST | `/enterprise/controls` | 企业控制项查询与幂等创建 |
 | GET | `/enterprise/workbench` | 按组织与账期查询治理驾驶舱 |
 | GET | `/enterprise/period-status` | 查询组织账期锁定状态 |
