@@ -13,11 +13,17 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class ReconciliationApiTests {
     @Autowired MockMvc mvc;
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Test
     void cleanBatchCompletesReconciliationConfirmationAndSettlement() throws Exception {
         long id=create("REC-DOMAIN-001",100000,99950,1000,1000,0,true,true,true);
@@ -33,6 +39,9 @@ class ReconciliationApiTests {
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.state").value("SETTLED"));
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Test
     void exceptionBatchRequiresAdminResolutionBeforeConfirmation() throws Exception {
         long id=create("REC-DOMAIN-EX",100000,70000,1000,700,8,true,true,true);
@@ -50,6 +59,9 @@ class ReconciliationApiTests {
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.batch.state").value("RECONCILED"));
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Test
     void paymentGateRejectsMissingInvoiceOrUnverifiedAccount() throws Exception {
         long id=create("REC-DOMAIN-PAY",50000,50000,500,500,0,true,false,false);
@@ -65,6 +77,9 @@ class ReconciliationApiTests {
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.confirmed").isNumber());
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Test
     void transactionLinesAreDeduplicatedAndMatchedByExternalReference() throws Exception {
         long id=create("REC-LINES-001",300,250,3,2,1,true,true,true);
@@ -89,6 +104,9 @@ class ReconciliationApiTests {
             .andExpect(status().isConflict());
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     private long create(String no,double source,double ledger,int transactions,int matched,int exceptions,
             boolean confirmed,boolean invoice,boolean bank)throws Exception{
         var result=mvc.perform(post("/api/settlement/reconciliation")

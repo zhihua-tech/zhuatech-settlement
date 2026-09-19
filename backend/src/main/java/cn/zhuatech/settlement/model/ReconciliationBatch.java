@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+ */
 @Entity
 @Table(name="reconciliation_batches",uniqueConstraints=@UniqueConstraint(columnNames="batchNo"))
 public class ReconciliationBatch {
@@ -25,7 +28,13 @@ public class ReconciliationBatch {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     protected ReconciliationBatch(){}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public ReconciliationBatch(String batchNo,String organizationCode,String counterparty,BigDecimal sourceAmount,
             BigDecimal ledgerAmount,int transactionCount,int matchedCount,int unresolvedExceptions,
             boolean counterpartConfirmed,boolean invoiceReady,boolean bankAccountVerified){
@@ -35,21 +44,87 @@ public class ReconciliationBatch {
         this.counterpartConfirmed=counterpartConfirmed;this.invoiceReady=invoiceReady;
         this.bankAccountVerified=bankAccountVerified;this.state="DRAFT";
     }
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @PrePersist void created(){createdAt=updatedAt=LocalDateTime.now();}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @PreUpdate void updated(){updatedAt=LocalDateTime.now();}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public void reconcile(boolean clean){state=clean?"RECONCILED":"EXCEPTION";}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public void resolve(BigDecimal ledger,int matched,int exceptions){
         ledgerAmount=ledger;matchedCount=matched;unresolvedExceptions=exceptions;
     }
-    public void confirm(){state="CONFIRMED";} public void settle(){state="SETTLED";}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public void confirm(){state="CONFIRMED";} /**
+                                               * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                               */
+public void settle(){state="SETTLED";}
 
-    public Long getId(){return id;} public String getBatchNo(){return batchNo;}
-    public String getOrganizationCode(){return organizationCode;} public String getCounterparty(){return counterparty;}
-    public BigDecimal getSourceAmount(){return sourceAmount;} public BigDecimal getLedgerAmount(){return ledgerAmount;}
-    public int getTransactionCount(){return transactionCount;} public int getMatchedCount(){return matchedCount;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public Long getId(){return id;} /**
+                                     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                     */
+public String getBatchNo(){return batchNo;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public String getOrganizationCode(){return organizationCode;} /**
+                                                                   * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                                                   */
+public String getCounterparty(){return counterparty;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public BigDecimal getSourceAmount(){return sourceAmount;} /**
+                                                               * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                                               */
+public BigDecimal getLedgerAmount(){return ledgerAmount;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public int getTransactionCount(){return transactionCount;} /**
+                                                                * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                                                */
+public int getMatchedCount(){return matchedCount;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public int getUnresolvedExceptions(){return unresolvedExceptions;}
-    public boolean isCounterpartConfirmed(){return counterpartConfirmed;} public boolean isInvoiceReady(){return invoiceReady;}
-    public boolean isBankAccountVerified(){return bankAccountVerified;} public String getState(){return state;}
-    public long getVersion(){return version;} public LocalDateTime getCreatedAt(){return createdAt;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public boolean isCounterpartConfirmed(){return counterpartConfirmed;} /**
+                                                                           * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                                                           */
+public boolean isInvoiceReady(){return invoiceReady;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public boolean isBankAccountVerified(){return bankAccountVerified;} /**
+                                                                         * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                                                         */
+public String getState(){return state;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
+    public long getVersion(){return version;} /**
+                                               * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+                                               */
+public LocalDateTime getCreatedAt(){return createdAt;}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public LocalDateTime getUpdatedAt(){return updatedAt;}
 }

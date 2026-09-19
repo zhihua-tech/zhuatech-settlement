@@ -12,14 +12,26 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.*;
 import java.util.*;
 
+/**
+ * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+ */
 @Service
 public class ReconciliationService {
     private final ReconciliationBatchRepository batches;private final AuditLogRepository audits;
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public ReconciliationService(ReconciliationBatchRepository batches,AuditLogRepository audits){
         this.batches=batches;this.audits=audits;
     }
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public List<ReconciliationBatch> list(){return batches.findAllByOrderByUpdatedAtDesc();}
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Transactional
     public ReconciliationBatch create(CreateRequest r){
         if(r.matchedCount()>r.transactionCount())throw bad("匹配笔数不能大于交易笔数");
@@ -30,6 +42,9 @@ public class ReconciliationService {
         audit("创建对账批次",item,r.counterparty());return item;
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Transactional
     public MatchResult reconcile(Long id){
         var item=get(id);require(item,"DRAFT","只有草稿批次允许执行匹配");
@@ -39,6 +54,9 @@ public class ReconciliationService {
         return new MatchResult(item,metrics);
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Transactional
     public MatchResult resolve(Long id,ResolveRequest r){
         var item=get(id);require(item,"EXCEPTION","只有差异批次允许调整");
@@ -49,6 +67,9 @@ public class ReconciliationService {
         item.reconcile(clean);audit("复核对账差异",item,r.remark());return new MatchResult(item,metrics);
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Transactional
     public ReconciliationBatch confirm(Long id){
         var item=get(id);require(item,"RECONCILED","仅无未决差异批次允许确认");
@@ -56,6 +77,9 @@ public class ReconciliationService {
         item.confirm();audit("确认结算单",item,"对方确认完成");return item;
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     @Transactional
     public ReconciliationBatch settle(Long id,String paymentReference){
         var item=get(id);require(item,"CONFIRMED","仅已确认结算单允许付款结算");
@@ -64,7 +88,13 @@ public class ReconciliationService {
         item.settle();audit("完成付款结算",item,paymentReference);return item;
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public Metrics metrics(Long id){return metrics(get(id));}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     private Metrics metrics(ReconciliationBatch item){
         BigDecimal variance=item.getSourceAmount().subtract(item.getLedgerAmount()).abs();
         BigDecimal tolerance=item.getSourceAmount().multiply(new BigDecimal("0.001")).max(BigDecimal.ONE)
@@ -74,27 +104,60 @@ public class ReconciliationService {
         return new Metrics(variance,tolerance,rate,item.getUnresolvedExceptions());
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public Dashboard dashboard(){return new Dashboard(batches.count(),batches.countByState("EXCEPTION"),
         batches.countByState("RECONCILED"),batches.countByState("CONFIRMED"),batches.countByState("SETTLED"));}
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     private ReconciliationBatch get(Long id){return batches.findById(id).orElseThrow(()->
         new ResponseStatusException(HttpStatus.NOT_FOUND,"对账批次不存在"));}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     private void require(ReconciliationBatch item,String state,String message){if(!state.equals(item.getState()))throw conflict(message);}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     private ResponseStatusException conflict(String message){return new ResponseStatusException(HttpStatus.CONFLICT,message);}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     private ResponseStatusException bad(String message){return new ResponseStatusException(HttpStatus.BAD_REQUEST,message);}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     private void audit(String action,ReconciliationBatch item,String detail){
         var auth=SecurityContextHolder.getContext().getAuthentication();
         audits.save(new AuditLog("RECONCILIATION",action,item.getBatchNo(),auth==null?"system":auth.getName(),detail));
     }
 
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public record CreateRequest(@NotBlank @Size(max=40) String batchNo,@NotBlank @Size(max=40) String organizationCode,
         @NotBlank @Size(max=100) String counterparty,@NotNull @PositiveOrZero BigDecimal sourceAmount,
         @NotNull @PositiveOrZero BigDecimal ledgerAmount,@PositiveOrZero int transactionCount,
         @PositiveOrZero int matchedCount,@PositiveOrZero int unresolvedExceptions,
         boolean counterpartConfirmed,boolean invoiceReady,boolean bankAccountVerified){}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public record ResolveRequest(@NotNull @PositiveOrZero BigDecimal ledgerAmount,@PositiveOrZero int matchedCount,
         @PositiveOrZero int unresolvedExceptions,@NotBlank @Size(max=300) String remark){}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public record Metrics(BigDecimal amountVariance,BigDecimal tolerance,double matchRate,int unresolvedExceptions){}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public record MatchResult(ReconciliationBatch batch,Metrics metrics){}
+    /**
+     * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+     */
     public record Dashboard(long total,long exception,long reconciled,long confirmed,long settled){}
 }
